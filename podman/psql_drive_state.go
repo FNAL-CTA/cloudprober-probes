@@ -90,10 +90,13 @@ func snake_case(camel string) (snake string) {
 }
 
 func main() {
-        pg_pw := os.Getenv("PGPASSWORD")
-	pg_host := os.Getenv("PGHOST")
-	pg_port := os.Getenv("PGPORT")
-	dsn := fmt.Sprintf("postgres://cta:%s@%s:%s/cta_dev?sslmode=disable", pg_pw, pg_host, pg_port)
+    pg_pw := os.Getenv("SQL_PASSWORD")
+	pg_host := os.Getenv("SQL_HOST")
+	pg_port := os.Getenv("SQL_PORT")
+	pg_user := os.Getenv("SQL_USER")
+	pg_db := os.Getenv("SQL_DB")
+	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
+	                   pg_user, pg_pw, pg_host, pg_port, pg_db)
 	sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
 	db := bun.NewDB(sqldb, pgdialect.New())
 	ctx := context.Background()
